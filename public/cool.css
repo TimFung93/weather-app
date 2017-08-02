@@ -1,0 +1,40 @@
+body {
+	background-color: #007D9D;
+	color:#fff;
+}
+
+.main {
+	padding: 70px;
+
+}
+
+#temperature {
+	font-size: 4.965em;
+	margin-top: 20px;
+	padding-top: 30px;
+}
+
+
+#celsius {
+	vertical-align: 50%;
+	font-size: 51px;
+}
+
+.button {
+	padding: 100px;
+}
+
+.btn-primary {
+	background-color: transparent;
+	border-color: #fff;
+}
+.btn-primary:hover {
+    color: rgb(255, 255, 255);
+    background-color: transparent;
+    border-color: #32f275
+}
+
+img {
+	height: 80px;
+	width: 80px;
+}
