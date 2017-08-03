@@ -7,7 +7,7 @@ const path = require('path');
 const app = express();
 
 
-const myKey = require('./../config.json');
+//const myKey = require('./../config.json');
 const {responses} = require('./responses/responses');
 //const key = myKey.key
 
