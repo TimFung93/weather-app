@@ -55,7 +55,7 @@ app.get('/weather/:address', (req, response) => {
 			formatted_address = res.data.results[0].formatted_address
 			return axios.get(weatherUrl)
 		}).then(res => {
-			let temperature = Math.round((res.data.currently.temperature - 32) * 0.5556 - 10)
+			let temperature = Math.round((res.data.currently.temperature - 32) * 0.5556)
 			let apparentTemperature = Math.round((res.data.currently.apparentTemperature - 32 ) * 0.5556)
 			let description = res.data.minutely.summary
 			let responsesDescriptions = responses(temperature)
