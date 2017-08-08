@@ -50,14 +50,16 @@ app.get('/weather/:address', (req, response) => {
 			}
 			let lat = res.data.results[0].geometry.location.lat
 			let lng = res.data.results[0].geometry.location.lng
+			console.log(lat, lng)
 			let weatherUrl = `https://api.darksky.net/forecast/${key}/${lat},${lng}`
 			console.log(res.data.results[0].formatted_address)
 			formatted_address = res.data.results[0].formatted_address
 			return axios.get(weatherUrl)
 		}).then(res => {
+			// const convert celciuis
 			let temperature = Math.round((res.data.currently.temperature - 32) * 0.5556)
 			let apparentTemperature = Math.round((res.data.currently.apparentTemperature - 32 ) * 0.5556)
-			let description = res.data.minutely.summary
+			let description = res.data.hourly.summary
 			let responsesDescriptions = responses(temperature)
 			console.log(`It's currently ${temperature} degrees. It feels liks ${apparentTemperature} degrees`)
 			if(temperature >= 23) {
@@ -76,6 +78,22 @@ app.get('/weather/:address', (req, response) => {
 					description,
 					responsesDescriptions
 				});
+			} else if (temperature <= 15 && temperature >= 3) {
+				response.render('cold', {
+					temperature,
+					apparentTemperature,
+					formatted_address,
+					description,
+					responsesDescriptions
+				})
+			} else {
+					response.render('veryCold', {
+					temperature,
+					apparentTemperature,
+					formatted_address,
+					description,
+					responsesDescriptions
+				})
 			}	
 		}).catch(err => {
 			if (err.code === 'ENOTFOUND') {

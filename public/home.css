@@ -4,7 +4,7 @@
 body {
 	background: #DDD;
 	font-size: 15px;
-
+  color: #323232;
 }
 #wrap {
   margin: 50px 100px;
@@ -70,12 +70,18 @@ input[type="submit"]:hover {
   opacity: 0.8;
 }
 
-#click {
+#clickHere {
   margin-top: 80px;
 }
 
+#title {
+  text-transform: uppercase;
+  font-size: 80px;
+}
 
-
+.row {
+  text-align: center;
+}
 
 
 
