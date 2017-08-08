@@ -4,12 +4,13 @@ const axios = require('axios');
 const path = require('path');
 
 
+
+const {responses} = require('./responses/responses');
 const app = express();
 
 
-const myKey = require('./../config.json');
-const {responses} = require('./responses/responses');
-const key = myKey.key
+// const myKey = require('./../config.json');
+// const key = myKey.key
 
 
 const port = process.env.PORT || 8080;
@@ -51,7 +52,7 @@ app.get('/weather/:address', (req, response) => {
 			let lat = res.data.results[0].geometry.location.lat
 			let lng = res.data.results[0].geometry.location.lng
 			console.log(lat, lng)
-			let weatherUrl = `https://api.darksky.net/forecast/${key}/${lat},${lng}`
+			let weatherUrl = `https://api.darksky.net/forecast/a422c5839ded8434ccba6e5167dc91ad/${lat},${lng}`
 			console.log(res.data.results[0].formatted_address)
 			formatted_address = res.data.results[0].formatted_address
 			return axios.get(weatherUrl)
