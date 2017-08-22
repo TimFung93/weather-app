@@ -2,10 +2,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const path = require('path');
+const hbs = require('hbs');
 
 
 
 const {responses} = require('./responses/responses');
+
+const publicPath = path.join(__dirname, '../public');
+const partialsPath = path.join(__dirname,'../views/partials')
 const app = express();
 
 
@@ -13,20 +17,24 @@ const app = express();
 // const key = myKey.key
 
 
+
+
+
 const port = process.env.PORT || 8080;
 
 app.set('view engine', 'hbs');
-app.use(express.static(path.join(__dirname, './../public')));
+app.use(express.static(publicPath))
 
 
 
-
+hbs.registerPartials(partialsPath)
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+
 
 
 
