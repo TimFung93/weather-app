@@ -1,9 +1,9 @@
-Command line weather-app created using Node.js. Give address to find temperature of the address given.
+Weather-app created using Node.js. Give address to find temperature of the address given.
 
 
 Commands: <br />
 
--a = address<br />
+https://calm-coast-22485.herokuapp.com/ <br />
 
-Example query:  node app.js -a "1500 Sandhurst circle"
+Example query:  "1500 Sandhurst circle"
 
