@@ -15,8 +15,8 @@ const partialsPath = path.join(__dirname,'../views/partials')
 const app = express();
 
 
-// const myKey = require('./../config.json');
-// const key = myKey.key
+const myKey = require('./../config.json');
+const key = myKey.key
 const port = process.env.PORT || 8080;
 
 app.set('view engine', 'hbs');
