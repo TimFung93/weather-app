@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const axios = require('axios');
 const path = require('path');
 const hbs = require('hbs');
-
+const moment = require('moment');
 
 
 const {responses} = require('./responses/responses');
@@ -17,11 +17,6 @@ const app = express();
 
 // const myKey = require('./../config.json');
 // const key = myKey.key
-
-
-
-
-
 const port = process.env.PORT || 8080;
 
 app.set('view engine', 'hbs');
@@ -57,7 +52,7 @@ app.get('/weather/:address', (req, response) => {
 	axios.get(geoCodeUrl)
 		.then(res => {
 			if (res.data.status === 'ZERO_RESULTS') {
-				throw new Error('Unable to find that address')
+				return new Error('Unable to find that address')
 			}
 			let lat = res.data.results[0].geometry.location.lat
 			let lng = res.data.results[0].geometry.location.lng
@@ -67,6 +62,8 @@ app.get('/weather/:address', (req, response) => {
 			return axios.get(weatherUrl)
 		}).then(res => {
 			// const convert celciuis
+			const currentTime = moment().valueOf()
+			const formattedTime = moment(currentTime).format('h:mm A')
 			const currentIcon = selectIcon(res.data.currently.icon)
 			const temperature = calc_celsius(res.data.currently.temperature)
 			const apparentTemperature = calc_celsius(res.data.currently.apparentTemperature)
@@ -80,7 +77,8 @@ app.get('/weather/:address', (req, response) => {
 					formatted_address,
 					description,
 					responsesDescriptions,
-					currentIcon
+					currentIcon,
+					formattedTime
 
 				});
 			} else if(temperature  <= 22 && temperature >= 15) {
@@ -90,7 +88,8 @@ app.get('/weather/:address', (req, response) => {
 					formatted_address,
 					description,
 					responsesDescriptions,
-					currentIcon
+					currentIcon,
+					formattedTime
 				});
 			} else if (temperature <= 15 && temperature >= 3) {
 				response.render('cold', {
@@ -99,7 +98,8 @@ app.get('/weather/:address', (req, response) => {
 					formatted_address,
 					description,
 					responsesDescriptions,
-					currentIcon
+					currentIcon,
+					formattedTime
 				})
 			} else {
 					response.render('veryCold', {
@@ -108,19 +108,18 @@ app.get('/weather/:address', (req, response) => {
 					formatted_address,
 					description,
 					responsesDescriptions,
-					currentIcon
+					currentIcon,
+					formattedTime
 				})
 			}	
 		}).catch(err => {
 			if (err.code === 'ENOTFOUND') {
-				console.log('Unable to connect to API server')
+				return 'Network error'
 			} else {
-				console.log(err.message)
+				return err.message
 			}
 		})
 });
-
-
 
 
 app.listen(port , () => {
