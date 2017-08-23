@@ -7,6 +7,8 @@ const hbs = require('hbs');
 
 
 const {responses} = require('./responses/responses');
+const {calc_celsius} = require('./responses/calc_celsius');
+const {selectIcon} = require('./responses/selectIcon');
 
 const publicPath = path.join(__dirname, '../public');
 const partialsPath = path.join(__dirname,'../views/partials')
@@ -59,17 +61,17 @@ app.get('/weather/:address', (req, response) => {
 			}
 			let lat = res.data.results[0].geometry.location.lat
 			let lng = res.data.results[0].geometry.location.lng
-			console.log(lat, lng)
 			let weatherUrl = `https://api.darksky.net/forecast/a422c5839ded8434ccba6e5167dc91ad/${lat},${lng}`
 			console.log(res.data.results[0].formatted_address)
 			formatted_address = res.data.results[0].formatted_address
 			return axios.get(weatherUrl)
 		}).then(res => {
 			// const convert celciuis
-			let temperature = Math.round((res.data.currently.temperature - 32) * 0.5556)
-			let apparentTemperature = Math.round((res.data.currently.apparentTemperature - 32 ) * 0.5556)
-			let description = res.data.hourly.summary
-			let responsesDescriptions = responses(temperature)
+			const currentIcon = selectIcon("snow")
+			const temperature = calc_celsius(res.data.currently.temperature)
+			const apparentTemperature = calc_celsius(res.data.currently.apparentTemperature)
+			const description = res.data.hourly.summary
+			const responsesDescriptions = responses(temperature)
 			console.log(`It's currently ${temperature} degrees. It feels liks ${apparentTemperature} degrees`)
 			if(temperature >= 23) {
 				response.render('hot', {
@@ -77,7 +79,9 @@ app.get('/weather/:address', (req, response) => {
 					apparentTemperature,
 					formatted_address,
 					description,
-					responsesDescriptions
+					responsesDescriptions,
+					currentIcon
+
 				});
 			} else if(temperature  <= 22 && temperature >= 15) {
 				response.render('cool', {
@@ -85,7 +89,8 @@ app.get('/weather/:address', (req, response) => {
 					apparentTemperature,
 					formatted_address,
 					description,
-					responsesDescriptions
+					responsesDescriptions,
+					currentIcon
 				});
 			} else if (temperature <= 15 && temperature >= 3) {
 				response.render('cold', {
@@ -93,7 +98,8 @@ app.get('/weather/:address', (req, response) => {
 					apparentTemperature,
 					formatted_address,
 					description,
-					responsesDescriptions
+					responsesDescriptions,
+					currentIcon
 				})
 			} else {
 					response.render('veryCold', {
@@ -101,7 +107,8 @@ app.get('/weather/:address', (req, response) => {
 					apparentTemperature,
 					formatted_address,
 					description,
-					responsesDescriptions
+					responsesDescriptions,
+					currentIcon
 				})
 			}	
 		}).catch(err => {
