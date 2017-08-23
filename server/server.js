@@ -67,7 +67,7 @@ app.get('/weather/:address', (req, response) => {
 			return axios.get(weatherUrl)
 		}).then(res => {
 			// const convert celciuis
-			const currentIcon = selectIcon("snow")
+			const currentIcon = selectIcon(res.data.currently.icon)
 			const temperature = calc_celsius(res.data.currently.temperature)
 			const apparentTemperature = calc_celsius(res.data.currently.apparentTemperature)
 			const description = res.data.hourly.summary
